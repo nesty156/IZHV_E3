@@ -201,10 +201,27 @@ public class Gun : MonoBehaviour
         var bulletRotation = Quaternion.Euler(director.eulerAngles) * Quaternion.Euler(0f,0.0f,0.0f);
         Debug.Log(bulletRotation);
         bulletPosition += (bulletRotation * Vector3.forward) * spawnOffset;
-        SpawnBullet(
-            bulletPosition,
-            bulletRotation
-        );
+        if (shotgun)
+        {
+            fireRate = 200f;
+            var increment = shotgunSpread / shotgunBullets;
+            var initialAngle = -shotgunSpread / 2;
+            for (int i = 0; i < shotgunBullets; i++)
+            {
+                SpawnBullet(
+                    bulletPosition,
+                    bulletRotation * Quaternion.Euler(0f,initialAngle,0.0f) * Quaternion.Euler(0f,(i+1)* increment,0.0f)
+                );
+            }
+        }
+        else
+        {
+            fireRate = 700f;
+            SpawnBullet(
+                bulletPosition,
+                bulletRotation
+            );
+        }
     }
 
     /// <summary>
